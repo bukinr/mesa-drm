@@ -1636,7 +1636,7 @@ struct drm_i915_reset_stats {
 };
 
 struct drm_i915_gem_userptr {
-	__u64 user_ptr;
+	drm_uptr_t user_ptr;
 	__u64 user_size;
 	__u32 flags;
 #define I915_USERPTR_READ_ONLY 0x1

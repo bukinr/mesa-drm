@@ -1,7 +1,7 @@
 /**************************************************************************
  *
- * Copyright © 2007 Red Hat Inc.
- * Copyright © 2007-2012 Intel Corporation
+ * Copyright ï¿½ 2007 Red Hat Inc.
+ * Copyright ï¿½ 2007-2012 Intel Corporation
  * Copyright 2006 Tungsten Graphics, Inc., Bismarck, ND., USA
  * All Rights Reserved.
  *
@@ -28,7 +28,7 @@
  *
  **************************************************************************/
 /*
- * Authors: Thomas Hellström <thomas-at-tungstengraphics-dot-com>
+ * Authors: Thomas Hellstrï¿½m <thomas-at-tungstengraphics-dot-com>
  *          Keith Whitwell <keithw-at-tungstengraphics-dot-com>
  *	    Eric Anholt <eric@anholt.net>
  *	    Dave Airlie <airlied@linux.ie>
@@ -916,7 +916,7 @@ drm_intel_gem_bo_alloc_userptr(drm_intel_bufmgr *bufmgr,
 	bo_gem->bo.size = size;
 
 	memclear(userptr);
-	userptr.user_ptr = (__u64)((unsigned long)addr);
+	userptr.user_ptr = (drm_uptr_t)(uintptr_t)addr;
 	userptr.user_size = size;
 	userptr.flags = flags;
 
@@ -985,7 +985,7 @@ has_userptr(drm_intel_bufmgr_gem *bufmgr_gem)
 	}
 
 	memclear(userptr);
-	userptr.user_ptr = (__u64)(unsigned long)ptr;
+	userptr.user_ptr = (drm_uptr_t)(uintptr_t)ptr;
 	userptr.user_size = pgsz;
 
 retry:
