@@ -3574,7 +3574,7 @@ static int drmParseSubsystemType(int maj, int min)
      }
     return subsystem_type;
 #elif defined(__OpenBSD__) || defined(__DragonFly__) || defined(__FreeBSD__)
-    return DRM_BUS_PCI;
+    return DRM_BUS_PLATFORM;
 #else
 #warning "Missing implementation of drmParseSubsystemType"
     return -EINVAL;
@@ -4257,6 +4257,10 @@ static int drmParseOFBusInfo(int maj, int min, char *fullname)
     free(name);
 
     return 0;
+#elif defined(__FreeBSD__)
+    strncpy(fullname, "testdev", DRM_PLATFORM_DEVICE_NAME_LEN);
+    fullname[DRM_PLATFORM_DEVICE_NAME_LEN - 1] = '\0';
+    return 0;
 #else
 #warning "Missing implementation of drmParseOFBusInfo"
     return -EINVAL;
@@ -4317,6 +4321,12 @@ free:
 
     free(*compatible);
     return err;
+#elif defined(__FreeBSD__)
+    *compatible = calloc(3 + 1, sizeof(char *));
+    if (!*compatible)
+        return -ENOMEM;
+    (*compatible)[0] = strdup("a");
+    return (0);
 #else
 #warning "Missing implementation of drmParseOFDeviceInfo"
     return -EINVAL;
@@ -4605,7 +4615,13 @@ drm_public int drmGetDeviceFromDevId(dev_t find_rdev, uint32_t flags, drmDeviceP
     }
     node_count = i;
 
+#if 0
+	/*
+	 * XXX: something wrong here —
+	 * mesa-demos use LLVM PIPE instead of panfrost
+	 */
     drmFoldDuplicatedDevices(local_devices, node_count);
+#endif
 
     *device = NULL;
 
